@@ -20,7 +20,7 @@ def create_user_with_del():
         "password": password,
         "name": name
     }
-    response_create = create_user(payload) #requests.post(f'{Endpoints.URL + Endpoints.CREATE_USER}', json=payload)
+    response_create = create_user(payload)
     if response_create.status_code == 200:
         data_user.append(email)
         data_user.append(password)
