@@ -20,7 +20,7 @@ def create_user_with_del():
         "password": password,
         "name": name
     }
-    response_create = requests.post(f'{Endpoints.URL + Endpoints.CREATE_USER}', json=payload)
+    response_create = create_user(payload) #requests.post(f'{Endpoints.URL + Endpoints.CREATE_USER}', json=payload)
     if response_create.status_code == 200:
         data_user.append(email)
         data_user.append(password)
@@ -30,3 +30,16 @@ def create_user_with_del():
     yield data_user
     token = data_user[3]
     delete_user(token)
+
+
+@pytest.fixture(scope='function')
+def login(create_user_with_del):
+    payload = {
+        'email': create_user_with_del[0],
+        'password': create_user_with_del[1],
+        'name': create_user_with_del[2]
+    }
+    headers = get_headers(create_user_with_del[3])
+    return login_user(payload, headers)
+
+
